@@ -1,0 +1,6 @@
+{
+  "name": "NSK Enterprise Admin",
+  "description": "Professional dark-themed admin web panel for the multi-branch NSK salon management system, featuring branch metrics, analytics, invoices, and device control.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
