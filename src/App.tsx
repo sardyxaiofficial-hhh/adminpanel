@@ -714,7 +714,7 @@ export default function App() {
             
             <div className="flex items-center justify-between gap-4">
               <div className="w-[140px] h-[140px]">
-                <ResponsiveContainer width="100%" height="100%">
+                <ResponsiveContainer width="100%" height="100%" id="payment-distribution-chart-container">
                   <PieChart>
                     <Pie
                       data={paymentData}
