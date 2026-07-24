@@ -1712,7 +1712,7 @@ export default function App() {
             <div className="w-14 h-14 rounded-2xl bg-gradient-to-b from-[#1a1a26] to-[#0d0d15] border border-[#d4a843]/30 flex items-center justify-center shadow-[0_0_20px_rgba(212,168,67,0.05)] mb-4">
               <ShieldCheck className="text-[#d4a843]" size={28} />
             </div>
-            <h1 className="text-2xl font-bold text-white tracking-tight font-display">NSK Enterprise</h1>
+            <h1 className="text-2xl font-bold text-white tracking-tight font-display">NSK ADMIN PANEL</h1>
             <p className="text-[10px] text-[#8888aa] uppercase tracking-[0.2em] mt-1.5 font-semibold">Security Clearance Portal</p>
           </div>
 

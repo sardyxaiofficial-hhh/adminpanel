@@ -79,9 +79,9 @@ export function Sidebar({
             </div>
             <div>
               <h1 className="text-xs font-bold text-white leading-none tracking-wider font-display flex items-center gap-1.5 uppercase">
-                NSK <span className="text-[#d4a843] text-[9px] font-bold bg-[#d4a843]/10 px-2 py-0.5 rounded-md border border-[#d4a843]/20 uppercase tracking-widest">Admin</span>
+                NSK <span className="text-[#d4a843] text-[9px] font-bold bg-[#d4a843]/10 px-2 py-0.5 rounded-md border border-[#d4a843]/20 uppercase tracking-widest">ADMIN PANEL</span>
               </h1>
-              <p className="text-[9px] text-[#55556a] font-bold uppercase mt-1 tracking-widest">Enterprise Panel</p>
+              <p className="text-[9px] text-[#55556a] font-bold uppercase mt-1 tracking-widest">Salon Management</p>
             </div>
           </div>
         ) : (
