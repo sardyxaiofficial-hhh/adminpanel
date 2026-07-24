@@ -337,7 +337,7 @@ export function ExpenseModal({ isOpen, onClose, onSave }: ExpenseModalProps) {
   const [category, setCategory] = useState('Rent');
   const [description, setDescription] = useState('');
   const [branchId, setBranchId] = useState('nsk-abt-gents-0001');
-  const [date, setDate] = useState(new Date('2026-07-17T09:53:05-07:00').toISOString().split('T')[0]);
+  const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
 
   if (!isOpen) return null;
 

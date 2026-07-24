@@ -204,6 +204,32 @@ export default function App() {
   };
 
   useEffect(() => {
+    // Check and restore active Supabase auth session
+    db.getSession().then((session) => {
+      if (session) {
+        setIsAuthenticated(true);
+        sessionStorage.setItem('nsk_admin_logged', 'true');
+      }
+    });
+
+    const subscription = db.onAuthStateChange((_event, session) => {
+      if (session) {
+        setIsAuthenticated(true);
+        sessionStorage.setItem('nsk_admin_logged', 'true');
+      } else if (_event === 'SIGNED_OUT') {
+        setIsAuthenticated(false);
+        sessionStorage.removeItem('nsk_admin_logged');
+      }
+    });
+
+    return () => {
+      if (subscription && typeof subscription.unsubscribe === 'function') {
+        subscription.unsubscribe();
+      }
+    };
+  }, []);
+
+  useEffect(() => {
     if (isAuthenticated) {
       loadData();
     }
@@ -227,7 +253,7 @@ export default function App() {
       
       // Date range calculation
       const invDate = new Date(inv.created_at);
-      const today = new Date('2026-07-17T09:53:05-07:00');
+      const today = new Date();
       let matchDate = true;
 
       if (selectedDateRange === 'today') {
@@ -262,7 +288,7 @@ export default function App() {
       const matchBranch = selectedBranch === 'all' || app.branch_id === selectedBranch;
       
       const appDate = new Date(app.start_time);
-      const today = new Date('2026-07-17T09:53:05-07:00');
+      const today = new Date();
       let matchDate = true;
 
       if (selectedDateRange === 'today') {
@@ -296,7 +322,7 @@ export default function App() {
       const matchBranch = selectedBranch === 'all' || exp.branch_id === selectedBranch;
       
       const expDate = new Date(exp.date);
-      const today = new Date('2026-07-17T09:53:05-07:00');
+      const today = new Date();
       let matchDate = true;
 
       if (selectedDateRange === 'today') {
@@ -322,18 +348,27 @@ export default function App() {
   }, [expenses, selectedBranch, selectedDateRange, expenseCategoryFilter]);
 
   // LOGIN ACTIONS
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (loginEmail === 'admin@nsk-enterprise.com' && loginPassword === 'admin') {
-      setIsAuthenticated(true);
-      sessionStorage.setItem('nsk_admin_logged', 'true');
-      setLoginError('');
-    } else {
-      setLoginError('Invalid Administrator credentials. Please verify your Email and Password.');
+    setIsActionLoading(true);
+    setLoginError('');
+    try {
+      const res = await db.signIn(loginEmail, loginPassword);
+      if (res.success) {
+        setIsAuthenticated(true);
+        sessionStorage.setItem('nsk_admin_logged', 'true');
+      } else {
+        setLoginError(res.error || 'Invalid credentials.');
+      }
+    } catch (err: any) {
+      setLoginError(err.message || 'Failed to authenticate.');
+    } finally {
+      setIsActionLoading(false);
     }
   };
 
-  const handleSignOut = () => {
+  const handleSignOut = async () => {
+    await db.signOut();
     setIsAuthenticated(false);
     sessionStorage.removeItem('nsk_admin_logged');
   };
@@ -500,7 +535,7 @@ export default function App() {
     const activeCustomers = customers.length;
     const activeStaff = staff.filter(s => s.status === 'active').length;
 
-    const todayStr = new Date('2026-07-17T09:53:05-07:00').toDateString();
+    const todayStr = new Date().toDateString();
     const todayAppointments = appointments.filter(app => new Date(app.start_time).toDateString() === todayStr);
     const completedToday = todayAppointments.filter(app => app.status === 'completed').length;
 
@@ -1130,9 +1165,9 @@ export default function App() {
       },
     ];
 
-    // Simple Interactive Calendar Visual representation for current date 2026-07-17 week
+    // Simple Interactive Calendar Visual representation for current date week
     const renderCalendarView = () => {
-      const today = new Date('2026-07-17T09:53:05-07:00');
+      const today = new Date();
       // Calculate start of week (Sunday)
       const sunday = new Date(today);
       sunday.setDate(today.getDate() - today.getDay());
@@ -1364,7 +1399,7 @@ export default function App() {
 
     const formatRelativeTime = (dateStr: string) => {
       const past = new Date(dateStr).getTime();
-      const now = new Date('2026-07-17T09:53:05-07:00').getTime();
+      const now = new Date().getTime();
       const diffMs = now - past;
       const diffMins = Math.floor(diffMs / 60000);
       const diffHrs = Math.floor(diffMins / 60);

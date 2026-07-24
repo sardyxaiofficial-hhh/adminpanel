@@ -32,7 +32,7 @@ interface RevenueChartProps {
 export function RevenueChart({ invoices, expenses }: RevenueChartProps) {
   const chartData = useMemo(() => {
     const dailyData: { [key: string]: { date: string; displayDate: string; revenue: number; expenses: number } } = {};
-    const today = new Date('2026-07-17T09:53:05-07:00');
+    const today = new Date();
 
     // Initialize past 30 days
     for (let i = 29; i >= 0; i--) {
@@ -412,7 +412,7 @@ export function LiveFeed({ invoices, onInvoiceClick }: LiveFeedProps) {
 
   const timeAgo = (dateStr: string) => {
     const past = new Date(dateStr).getTime();
-    const now = new Date('2026-07-17T09:53:05-07:00').getTime();
+    const now = new Date().getTime();
     const diffMs = now - past;
     const diffMins = Math.floor(diffMs / 60000);
     const diffHrs = Math.floor(diffMins / 60);
